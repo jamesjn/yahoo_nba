@@ -1,5 +1,3 @@
 require "yahoo_nba/version"
+require "yahoo_nba/yahoo_nba"
 
-module YahooNba
-  # Your code goes here...
-end
