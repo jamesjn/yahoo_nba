@@ -59,6 +59,20 @@ describe YahooNba do
       player_stats_hash.should == {"Kevin Durant" => "the right stats!"}
     end
 
+    it "should call get request for players up to 500" do
+      query = YahooNba::Query.new(@consumer_key, @consumer_secret)
+      access_token = query.instance_variable_get(:@access_token)
+      mock_xml = double
+      mock_get_response = double(:body => mock_xml)
+      0.step(500, 25) do |num|
+        Crack::XML.should_receive(:parse).with(mock_xml).and_return({'fantasy_content' => {'game' => {'players' => {'player' => 'right!'}}}})
+        access_token.should_receive(:get).with("/fantasy/v2/game/249/players;start=#{num};count=25").and_return(mock_get_response)
+      end
+      0.step(500, 25) do |n|
+        query.get_players_info_array_starting_at(n)
+      end
+    end
+
   end
 
 end
