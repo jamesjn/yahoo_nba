@@ -8,8 +8,8 @@ describe YahooNba do
 
   describe YahooNba::Query do
     before(:each) do
-      @consumer_key = "dj0yJmk9Z3ExYnVlRERPekVDJmQ9WVdrOVlWTnJOV2t6TlRRbWNHbzlNVFEzTnpRd09EUTJNZy0tJnM9Y29uc3VtZXJzZWNyZXQmeD1iNw--"
-      @consumer_secret = "a7d3c791b23f35774c608b7863b2d47508560927"  
+      @consumer_key = "key"
+      @consumer_secret = "secret"  
     end
 
     describe "initialize" do
