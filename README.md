@@ -1,6 +1,6 @@
 # YahooNba
 
-This gem uses the yahoo sports api to retrieve stats for nba players
+This gem uses the YAHOO Sports API to retrieve stats for NBA players
 
 ## Installation
 
@@ -18,7 +18,25 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+This gem assists in retrieving player keys and player stats using the Yahoo Sports API.
+
+require 'yahoo_nba'
+query = YahooNba::Query.new 'your_consumer_key', 'your_consumer_secret'
+(to obtain a key, go to http://developer.yahoo.com/)
+
+To get a hash with all the player keys:
+player_keys_hash = query.get_all_player_keys_hash
+
+The hash will be in the format:
+{"Player Name"=>"key123", "Player2 Name"=> "key234"}
+
+To get nba player stats:
+query.get_players_stats_hash_using(players_keys_hash)
+
+The hash will be in the format returned by the Yahoo Sports API.  
+
+For more information see:
+http://developer.yahoo.com/fantasysports/guide/
 
 ## Contributing
 

@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["jc582@optonline.net	"]
   gem.description   = %q{Get nba stats using yahoo api}
   gem.summary       = %q{Gem to get nba player stats using yahoo api}
-  gem.homepage      = ""
+  gem.homepage      = "https://github.com/jamesjn/yahoo_nba"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }

@@ -16,7 +16,9 @@ module YahooNba
 
     def get_players_key_hash_from(players_info_array) 
       players_key_hash = {}
-      players_info_array.each{|item| players_key_hash[item["name"]["full"]] = item['player_key']}
+      players_info_array.each do |item| 
+        players_key_hash[item["name"]["full"]] = item['player_key']
+      end
       players_key_hash
     end
 
@@ -28,6 +30,14 @@ module YahooNba
         players_stats_hash[player_name] = player_stats
       end
       players_stats_hash
+    end
+
+    def get_all_player_keys_hash
+      combined_array = []
+      0.step(500, 25) do |n|
+        combined_array = combined_array | get_players_info_array_starting_at(n)
+      end
+      get_players_key_hash_from(combined_array)
     end
   end
 end
