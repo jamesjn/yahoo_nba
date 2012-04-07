@@ -38,6 +38,7 @@ To get nba player stats:
     query.get_players_stats_hash_using(players_keys_hash)
 
 The hash will be in the format returned by the Yahoo Sports API.  
+Note: There will be a request to the Yahoo API for each player so it will take a while to get the stats for all the players.
 
 For more information see:
 http://developer.yahoo.com/fantasysports/guide/
