@@ -39,5 +39,10 @@ module YahooNba
       end
       get_players_key_hash_from(combined_array)
     end
+
+    def get_stats_categories
+      stats_categories_xml = @access_token.get("/fantasy/v2/game/nba/stat_categories")
+      stats_categories_hash = Crack::XML.parse(stats_categories_xml.body)["fantasy_content"]["game"]["stat_categories"]["stats"]
+    end 
   end
 end

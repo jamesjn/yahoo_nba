@@ -106,7 +106,25 @@ describe YahooNba do
                                             "player_key" => "key123"}]}}}})
           access_token.should_receive(:get).with("/fantasy/v2/game/249/players;start=#{num};count=25").and_return(mock_get_response)
         end
-        p query.get_all_player_keys_hash
+        query.get_all_player_keys_hash.should == ({"Kevin Durant"=>"key123"})
+      end
+    end
+
+    describe "get_stats_categories" do
+      it "should call get on the correct url for player stats" do
+        query = YahooNba::Query.new(@consumer_key, @consumer_secret)
+        access_token = query.instance_variable_get(:@access_token)
+        mock_xml = double
+        mock_get_stats_response = double(:body => mock_xml)
+        Crack::XML.should_receive(:parse).with(mock_xml).and_return(
+                                          {'fantasy_content' => 
+                                          {'game' => 
+                                          {'stat_categories' => 
+                                          {'stats' => 
+                                          [{"stat_id" => "0",
+                                          "name" => "Games Played"}]}}}})
+        access_token.should_receive(:get).with("/fantasy/v2/game/nba/stat_categories").and_return(mock_get_stats_response)
+        query.get_stats_categories.should eq([{"stat_id" => "0", "name" => "Games Played"}])
       end
     end
 
