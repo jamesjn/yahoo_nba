@@ -1,5 +1,8 @@
+require_relative 'player_includes'
+
 module YahooNba
   class Query
+    include PlayerIncludes
     
     def initialize(consumer_key, consumer_secret)
       consumer = ::OAuth::Consumer.new(consumer_key,
@@ -7,6 +10,7 @@ module YahooNba
                                       :site => 'http://fantasysports.yahooapis.com',
                                       :http_method => :get) 
       @access_token = OAuth::AccessToken.new(consumer)
+      @player_key_hash = player_key_hash
     end
    
     def get_players_info_array_starting_at(num)
@@ -24,12 +28,20 @@ module YahooNba
 
     def get_players_stats_hash_using(players_key_hash)
       players_stats_hash = {}
-      players_key_hash.each do |player_name, player_id|
-        player_stats_xml = @access_token.get("/fantasy/v2/player/#{player_id}/stats")
-        player_stats = Crack::XML.parse(player_stats_xml.body)["fantasy_content"]["player"]
+      players_key_hash.each do |player_name, player_key|
+        player_stats = get_player_stats_hash_with_player_key(player_key)
         players_stats_hash[player_name] = player_stats
       end
       players_stats_hash
+    end
+
+    def get_player_stats_hash_with_player_key(player_key)
+      player_stats_xml = @access_token.get("/fantasy/v2/player/#{player_key}/stats")
+      player_stats = Crack::XML.parse(player_stats_xml.body)["fantasy_content"]["player"]
+    end
+
+    def get_player_stats_hash_with_player_name(player_name)
+      get_player_stats_hash_with_player_key(@player_key_hash[player_name])
     end
 
     def get_all_player_keys_hash

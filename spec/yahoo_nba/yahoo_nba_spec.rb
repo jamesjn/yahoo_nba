@@ -30,6 +30,17 @@ describe YahooNba do
         query.instance_variable_get(:@access_token).should_not equal(nil)
       end
 
+      it "should set instance variable player_keys_hash with value from file" do
+        query = YahooNba::Query.new(@consumer_key, @consumer_secret)
+        query.instance_variable_get(:@player_key_hash).should_not equal(nil)
+      end
+
+      it "should set instance variable player_keys_hash with value from file" do
+        query = YahooNba::Query.new(@consumer_key, @consumer_secret)
+        player_key_hash = query.instance_variable_get(:@player_key_hash)
+        player_key_hash["LeBron James"].should == "249.p.3704"
+      end
+
     end
     
     describe "get_players_starting_at" do
@@ -125,6 +136,40 @@ describe YahooNba do
                                           "name" => "Games Played"}]}}}})
         access_token.should_receive(:get).with("/fantasy/v2/game/nba/stat_categories").and_return(mock_get_stats_response)
         query.get_stats_categories.should eq([{"stat_id" => "0", "name" => "Games Played"}])
+      end
+    end
+
+    describe "get_player_stats_hash_with_player_key" do
+      it "should use the player key to get the stats for the player" do
+        query = YahooNba::Query.new(@consumer_key, @consumer_secret)
+        access_token = query.instance_variable_get(:@access_token)
+        mock_xml = mock
+        mock_player_stats_xml = mock(:body => mock_xml)
+        Crack::XML.should_receive(:parse).with(mock_xml).and_return(
+                                          {'fantasy_content' =>
+                                            {'player' =>
+                                              'correct'
+                                            }
+                                          })  
+        access_token.should_receive(:get).with("/fantasy/v2/player/249.p.4244/stats").and_return(mock_player_stats_xml)
+        query.get_player_stats_hash_with_player_key("249.p.4244").should == "correct"
+      end
+    end
+
+    describe "get_player_stats_hash_with_player_name" do
+      it "should use the player key to get the stats for the player when given the player name" do
+        query = YahooNba::Query.new(@consumer_key, @consumer_secret)
+        access_token = query.instance_variable_get(:@access_token)
+        mock_xml = mock
+        mock_player_stats_xml = mock(:body => mock_xml)
+        Crack::XML.should_receive(:parse).with(mock_xml).and_return(
+                                          {'fantasy_content' =>
+                                            {'player' =>
+                                              'correct'
+                                            }
+                                          })  
+        access_token.should_receive(:get).with("/fantasy/v2/player/249.p.4244/stats").and_return(mock_player_stats_xml)
+        query.get_player_stats_hash_with_player_name("Kevin Durant") 
       end
     end
 
