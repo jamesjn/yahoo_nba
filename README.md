@@ -35,7 +35,11 @@ The hash will be in the format:
 
 To get nba player stats:
 
-    query.get_players_stats_hash_using(players_keys_hash)
+    query.get_players_stats_hash_using(player_keys_hash)
+
+To get an invidual player's stats:
+
+    query.get_player_stats_hash_with_player_name("LeBron James")
 
 The hash will be in the format returned by the Yahoo Sports API.  
 Note: There will be a request to the Yahoo API for each player so it will take a while to get the stats for all the players.
